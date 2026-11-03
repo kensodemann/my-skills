@@ -56,7 +56,7 @@ jobs:
           fi
 
       - name: Package skills
-        run: zip -r "agent-skills-$GITHUB_REF_NAME.zip" skills
+        run: zip -r "my-skills-$GITHUB_REF_NAME.zip" skills
 
       - name: Create GitHub release
         env:
@@ -65,4 +65,4 @@ jobs:
           gh release create "$GITHUB_REF_NAME" \
             --title "$GITHUB_REF_NAME" \
             --notes-file release-notes.md \
-            "agent-skills-$GITHUB_REF_NAME.zip"
+            "my-skills-$GITHUB_REF_NAME.zip"

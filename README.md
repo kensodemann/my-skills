@@ -126,22 +126,22 @@ The same plugin and skill discovery applies in the **desktop app** and in the **
 
 #### Cursor Agent CLI (terminal)
 
-**Note:** There is currently a bug in the Cursor CLI that ends up pinning the plugin to the initially installed version, so do not use this method at this time. Instead, clone the repo as a local plugin (`cd ~/.cursor/plugins/local/; git clone git@github.com:kensodemann/agent-skills.git` )
+**Note:** There is currently a bug in the Cursor CLI that ends up pinning the plugin to the initially installed version, so do not use this method at this time. Instead, clone the repo as a local plugin (`cd ~/.cursor/plugins/local/; git clone git@github.com:kensodemann/my-skills.git` )
 
 Use this path if you work in the terminal-based agent rather than the IDE **Customize** panel.
 
 1. Register this repository as a plugin marketplace (scriptable; safe to run in dotfiles or setup scripts):
    ```bash
-   agent plugin marketplace add https://github.com/kensodemann/agent-skills
+   agent plugin marketplace add https://github.com/kensodemann/my-skills
    ```
-   Optional: pin a branch, tag, or commit with `--git-ref` (for example `--git-ref v1.0.0`). List or refresh marketplaces with `agent plugin marketplace list` and `agent plugin marketplace update https://github.com/kensodemann/agent-skills`.
+   Optional: pin a branch, tag, or commit with `--git-ref` (for example `--git-ref v1.0.0`). List or refresh marketplaces with `agent plugin marketplace list` and `agent plugin marketplace update https://github.com/kensodemann/my-skills`.
 2. Start an interactive session from the repo you are working in:
    ```bash
    cd /path/to/your-project
    agent
    ```
 3. Install the plugin inside the session:
-   - Type **`/plugin`**, open the **Marketplace** tab, select **agent-skills**, and confirm install.
+   - Type **`/plugin`**, open the **Marketplace** tab, select **my-skills**, and confirm install.
    - Choose **User** (all workspaces on this machine) or **Project / workspace** (current workspace only)—same meaning as in the IDE flow below.
 4. Use skills in the terminal session:
    - **`/skills`** — list discovered skills and validation hints
@@ -153,17 +153,17 @@ There is no documented **`agent plugin install`** command yet; registering the m
 **Load a local checkout without marketplace install** (development or air-gapped):
 
 ```bash
-agent --plugin-dir /path/to/agent-skills
+agent --plugin-dir /path/to/my-skills
 ```
 
-You can pass **`--plugin-dir`** multiple times. Alternatively, clone into `~/.cursor/plugins/local/agent-skills/` (see [Local plugin development](#local-plugin-development)) and start a new `agent` session.
+You can pass **`--plugin-dir`** multiple times. Alternatively, clone into `~/.cursor/plugins/local/my-skills/` (see [Local plugin development](#local-plugin-development)) and start a new `agent` session.
 
 #### Cursor IDE (desktop app)
 
 1. Open **Customize** in the sidebar.
 2. Choose **From GitHub Repository** and enter:
-   `https://github.com/kensodemann/agent-skills`
-3. Install the **agent-skills** plugin.
+   `https://github.com/kensodemann/my-skills`
+3. Install the **my-skills** plugin.
 4. Choose scope when prompted:
    - **User** — Available in **every workspace** on your machine (good default if you want these skills everywhere). Also available in **`agent`** sessions on this machine.
    - **Project / workspace** — Tied to the **current workspace** only (good if only some repos should see them).
@@ -174,9 +174,9 @@ After install, skills appear under **Customize → Skills**. Invoke them from ch
 
 To test changes without publishing:
 
-1. Clone this repository into `~/.cursor/plugins/local/agent-skills/` (include `.cursor-plugin/` and `skills/`).
+1. Clone this repository into `~/.cursor/plugins/local/my-skills/` (include `.cursor-plugin/` and `skills/`).
 2. **IDE:** **Developer: Reload Window** (or restart Cursor) and confirm under **Customize**.
-3. **CLI:** Start `agent` again, or run `agent --plugin-dir ~/.cursor/plugins/local/agent-skills` from any directory.
+3. **CLI:** Start `agent` again, or run `agent --plugin-dir ~/.cursor/plugins/local/my-skills` from any directory.
 
 ---
 
@@ -189,7 +189,7 @@ Claude Code reads the `.claude-plugin/` manifest and loads skills from this repo
 **One step in Claude Code 2.1.275+** (in the Claude Code session):
 
 ```text
-/plugin install agent-skills --marketplace kensodemann/agent-skills
+/plugin install my-skills --marketplace kensodemann/my-skills
 ```
 
 If the marketplace is not registered yet, Claude adds it from the GitHub repo automatically.
@@ -197,14 +197,14 @@ If the marketplace is not registered yet, Claude adds it from the GitHub repo au
 **CLI** (same result; useful for scripts):
 
 ```bash
-claude plugin install agent-skills --marketplace kensodemann/agent-skills
+claude plugin install my-skills --marketplace kensodemann/my-skills
 ```
 
 Or add the marketplace explicitly, then install:
 
 ```bash
-claude plugin marketplace add kensodemann/agent-skills
-claude plugin install agent-skills
+claude plugin marketplace add kensodemann/my-skills
+claude plugin install my-skills
 ```
 
 **Install scope** (`-s` / `--scope`):
@@ -219,7 +219,7 @@ List installed plugins: `claude plugin list`.
 
 #### Release zip (optional)
 
-Tagged releases attach `agent-skills-vX.Y.Z.zip` containing only the `skills/` tree. You can unzip individual skill folders into a manual path (see below) without installing the full plugin.
+Tagged releases attach `my-skills-vX.Y.Z.zip` containing only the `skills/` tree. You can unzip individual skill folders into a manual path (see below) without installing the full plugin.
 
 ---
 
@@ -268,7 +268,7 @@ Commit `.cursor/skills/review-pull-request/` if you want the team to share it.
 
 ```bash
 mkdir -p ~/.cursor/skills
-ln -s /path/to/agent-skills/skills/review-pull-request ~/.cursor/skills/review-pull-request
+ln -s /path/to/my-skills/skills/review-pull-request ~/.cursor/skills/review-pull-request
 ```
 
 Reload the window so Cursor rescans skill directories.

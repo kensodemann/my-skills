@@ -1,5 +1,5 @@
 {
-  "name": "agent-skills",
+  "name": "my-skills",
   "owner": {
     "name": "Ken Sodemann",
     "email": "ken.sodemann@gmail.com"
@@ -9,7 +9,7 @@
   },
   "plugins": [
     {
-      "name": "agent-skills",
+      "name": "my-skills",
       "source": "./",
       "description": "A set of skills commonly utilized across all of my repositories."
     }

@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for contributing to **agent-skills**. This document covers how to prepare changes and how maintainers publish a release.
+Thank you for contributing to **my-skills**. This document covers how to prepare changes and how maintainers publish a release.
 
 ## Skills layout
 
@@ -98,7 +98,7 @@ On tag push `v*.*.*`, the workflow:
 2. Runs `npx -y @anthropic-ai/claude-code@2.1.300 plugin validate --strict .` from the repository root (**Validate plugin and marketplace**).
 3. Verifies skill folder names match each skill’s `name` field.
 4. Extracts release notes from `CHANGELOG.md` for that version.
-5. Creates `agent-skills-<tag>.zip` containing the `skills/` directory.
+5. Creates `my-skills-<tag>.zip` containing the `skills/` directory.
 6. Publishes a GitHub Release titled with the tag, with the changelog body and the zip as a release asset.
 
 Monitor the **Release** workflow run on the Actions tab. If it fails, fix the reported issue, amend or add commits as needed, **move or recreate the tag** on the corrected commit, and push the tag again.

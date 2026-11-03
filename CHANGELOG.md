@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.0.0]
+
+- Rename the set of skills from agent-skills to my-skills.
+
 ## [2.0.0]
 
 - Add `capture-intent` to interview the user and write an uncommitted root `INTENT.md` before a GitHub issue.
