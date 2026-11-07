@@ -17,5 +17,6 @@ description: >-
 4. Read `.github/ISSUE_TEMPLATE/feature.md` and match its structure and YAML frontmatter (`type: feature`, and the rest of that frontmatter). The draft uses that file's headings.
 5. Fill every heading from the whole source. Ask only when a heading would otherwise be empty. Do not add headings the template does not have.
 6. Show the full draft in chat for approval before `gh` creates it, unless the human asked to create it immediately. Keep the template's `type` and other frontmatter; set `title` from the source. The created issue is that approved draft: the approved title and body are what get created, with `gh issue create --type Feature`.
+7. When the issue was created from root `INTENT.md`, offer to remove `INTENT.md` and wait. Remove it only if the human agrees. When the issue was created from the prompt, do not offer to remove `INTENT.md`.
 
 For dividing the feature into child tasks, use the **create-tasks** skill. This skill does not create those children.
