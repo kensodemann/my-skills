@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.1]
+
+- Make `capture-intent` interview one question at a time, gather enough detail for downstream issue templates, and preserve user edits when revising `INTENT.md`.
+- Offer to remove root `INTENT.md` after `create-feature`, `create-task`, or `create-bug` creates an issue from it.
+- Clarify commit-gate command resolution in `plan-implementation`, including priority order, optional `build`, `make check` overlap with `test`, and recording non-standard commands in local agent config.
+
 ## [3.0.0]
 
 - Rename the set of skills from agent-skills to my-skills.

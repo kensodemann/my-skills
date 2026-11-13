@@ -38,13 +38,27 @@ If the branch matches none of those, ask whether this branch is the correct feat
 - The chunk should be large enough to be a meaningful and self-contained change, but small enough for a human to quickly review, both within the PLAN.md and in the code
 - The chunks will be labeled as [STEP-###]
 - The working flow after the plan is generated is that a user will ask for a step to be implemented. After the step is implemented (AI), the human will review the change, potentially request changes or make the changes themselves, and eventually commit the change
-- As such, the step should build, test, and lint without warning or error at the end of each step
+- As such, each step must pass the repository's commit gate (lint, test, and build when present) without warning or error at the end of the step
 - Do not generate any steps that do not make modifications (that is, no step that simply runs the regression tests, as that is done as part of the completion criteria of every step)
 - The human will ask for steps to be marked complete as they are implemented, so the "Status" in the step table is important
 
 Leave every Status value empty. **implement-next-step** sets Status to `complete` in the table and under that step after the user validates it. This skill does not.
 
-Number steps `[STEP-001]`, `[STEP-002]`, in dependency order. A later step may assume earlier steps are already committed. Each step, on its own, must leave build, test, and lint clean.
+Number steps `[STEP-001]`, `[STEP-002]`, in dependency order. A later step may assume earlier steps are already committed. Each step, on its own, must leave the commit gate clean.
+
+## Commit gate commands
+
+Resolve the project's `lint`, `test`, and `build` commands from local agent config (`AGENTS.md`, `CLAUDE.md`, `.cursor/rules/`) or the repository's tooling (`package.json`, `Makefile`, etc.). When matching common project commands, use this priority order for each role (picking the first command that exists in the project):
+
+- **lint:** `pnpm lint` (or `npm run lint`), `make lint`, `make check`
+- **test:** `pnpm test` (or `npm test`), `make test`
+- **build:** `pnpm build` (or `npm run build`), `make build`, `make web`, `make`
+
+If `make check` is used for `lint` and the `check` target in `Makefile` already includes the `test` target, skip the separate `test` command in the gate.
+
+A project may not yet have a `build` command. If `build` is absent, move forward with `lint` and `test` (or `make check` alone when it already runs `test`) as the gate.
+
+If `lint` or `test` cannot be found, stop and ask. When the project uses non-standard commands, ask the human for the commands and instruct them how to add a commit-gate section to their local agent config (for example, adding the `lint`, `test`, and optional `build` commands to `AGENTS.md`, `CLAUDE.md`, or a rule file under `.cursor/rules/`) so future runs pick them up automatically.
 
 ## Stop and ask
 
@@ -53,7 +67,7 @@ Do not write `PLAN.md` until these are settled. Ask in chat, list every open cho
 - The current branch matches none of the accepted names in Prerequisite, and the user has not confirmed it.
 - A step depends on a choice the issue does not settle (behavior, API, or which part of the code owns the change).
 - `PLAN.md` already exists.
-- The repository's build, test, or lint command cannot be identified. Do not invent a package manager or a linter.
+- The repository's `lint` or `test` command cannot be identified (a missing `build` is OK). Do not invent a package manager, target, or linter. Ask the user for the missing commands and show them how to record the commands in local agent config (`AGENTS.md`, `CLAUDE.md`, or `.cursor/rules/`).
 
 After the user answers, those choices are settled. Then write the plan.
 
@@ -68,7 +82,7 @@ After the user answers, those choices are settled. Then write the plan.
    - `issueType` null, or any other name: name what was found and wait. Do not write `PLAN.md`.
 5. Read the code the issue touches. Name real files only. State current behavior from that code.
 6. The step lists the test files for the change it makes and states what they assert. Do not require a failing test before production code. Do not add a new test suite when that area has none and the issue does not ask for tests. Do not write a second `PLAN.md`.
-7. Take build, test, and lint from the repository (package scripts, Makefile, task runner, or project rules). Those commands are the commit gate. They must succeed with no warning or error.
+7. Resolve the commit gate (`lint`, `test`, and `build` when available) per **Commit gate commands**. Those commands must succeed with no warning or error.
 8. Write root `PLAN.md` with the sections below.
 9. Tell the user to review and edit the plan. **implement-next-step** implements the next incomplete step and marks it complete only after the user validates it.
 
@@ -92,7 +106,7 @@ If acceptance depends on specific observable values or wording, add a short cont
 | ----- | ---------- | ------ | ----------------------- |
 | 1     | [STEP-001] |        | `path/a`, then `path/b` |
 
-**Commit gate** — the human commits. A spot-check does not replace the gate. Record the repository's commands:
+**Commit gate** — the human commits. A spot-check does not replace the gate. Record the repository's commands (omit `<build>` when the project does not have a build command, and omit `<test>` when `make check` already runs the `test` target):
 
 ```bash
 <build>
@@ -100,7 +114,7 @@ If acceptance depends on specific observable values or wording, add a short cont
 <lint>
 ```
 
-State that all three must succeed with no warning or error before that commit.
+State that every commit-gate command must succeed with no warning or error before that commit.
 
 **Each step** uses this shape. The same `[STEP-###]` label appears in the table and the heading.
 
@@ -125,7 +139,7 @@ State that all three must succeed with no warning or error before that commit.
 
 - <what that run should show>
 
-**Done when:** <acceptance criteria hold, and build, test, and lint succeed with no warning or error.>
+**Done when:** <acceptance criteria hold, and the commit-gate commands succeed with no warning or error.>
 
 **Commit:** the commit-gate commands succeed with no warning or error.
 ```
