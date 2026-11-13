@@ -35,7 +35,7 @@ Merge release-related changes to the default branch. You need permission to push
 3. `npx -y @anthropic-ai/claude-code@2.1.300 plugin validate --strict .`
 4. `git tag vX.Y.Z` (substitute the actual version)
 5. `git push origin main`
-6. `git push vX.Y.Z` (substitute the actual version)
+6. `git push origin vX.Y.Z` (substitute the actual version)
 7. CI checks the version, validates the plugin, zips `skills/`, and publishes the GitHub Release.
 
 ### Release checklist
