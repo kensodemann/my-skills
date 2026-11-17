@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.0.2]
+
+- Make `create-tasks` and `update-deps` user-invoked only, so they run when named and are not started from a matching request.
+
 ## [3.0.1]
 
 - Make `capture-intent` interview one question at a time, gather enough detail for downstream issue templates, and preserve user edits when revising `INTENT.md`.
