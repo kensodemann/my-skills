@@ -5,6 +5,7 @@ description: >-
   upgrades unapplied, and write update-report.md. Use when the user asks to
   update, bump, or upgrade npm or pnpm dependencies, or to refresh outdated
   packages.
+disable-model-invocation: true
 ---
 
 # Update Dependencies

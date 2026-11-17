@@ -5,6 +5,7 @@ description: >-
   /create-tasks #N, or asks to break a feature into child tasks. The parent
   is a Feature. Each child is a Task sub-issue (--parent) with "Related to #N".
   A task or a bug is not a parent.
+disable-model-invocation: true
 ---
 
 # Create Tasks
