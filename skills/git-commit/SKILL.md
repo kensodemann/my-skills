@@ -1,16 +1,17 @@
 ---
 name: git-commit
 description: >-
-  Commit the current changes and choose the message from the branch. On main,
-  confirm whether to commit there or create a branch first. On a branch named
-  for a GitHub issue, the first commit follows the issue intent; later commits
-  on any non-main branch are WIP. Use when the user asks to commit, create a
-  commit, or write the commit message for the current changes.
+  Commit the current changes, choose the message from the branch, and push
+  after a successful commit. On main, confirm whether to commit there or
+  create a branch first. On a branch named for a GitHub issue, the first
+  commit follows the issue intent; later commits on any non-main branch are
+  WIP. Use when the user asks to commit, create a commit, or write the commit
+  message for the current changes.
 ---
 
 # Git commit
 
-Commit the current changes. Do not push. Do not update git config. Do not skip hooks (`--no-verify`). Do not amend unless the user explicitly asks.
+Commit the current changes, then push that commit. Do not update git config. Do not skip hooks (`--no-verify`). Do not amend unless the user explicitly asks. Do not force-push.
 
 ## Gather
 
@@ -99,6 +100,8 @@ EOF
 )"
 ```
 
-If a hook rejects the commit, fix the failure and create a new commit. Do not amend that rejected commit.
+If a hook rejects the commit, fix the failure and create a new commit. Do not amend that rejected commit. Do not push until a commit succeeds.
 
-Run `git status` afterward and report the branch and the commit subject. Do not push.
+After a successful commit, push the current branch. If it has no upstream, use `git push -u origin HEAD`. Otherwise use `git push`. Do not force-push. If the push fails, report the error and leave the commit local.
+
+Run `git status` afterward and report the branch, the commit subject, and the push result.
