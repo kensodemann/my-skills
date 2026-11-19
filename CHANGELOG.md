@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0]
+
+- Add `git-commit` to choose the commit message from the branch, push after a successful commit, and ask before committing on `main`.
+- Add `create-pull-request` to open a pull request from the branch change and associate it when the branch names a GitHub issue.
+- Add `merge-pull-request` to rebase or squash a pull request without creating a merge commit, then update `main` and delete the branch.
+- Document those skills in the README loop.
+
 ## [3.0.2]
 
 - Make `create-tasks` and `update-deps` user-invoked only, so they run when named and are not started from a matching request.
