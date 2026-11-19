@@ -24,7 +24,7 @@ Invoke a skill explicitly with **`/skill-name`** (Cursor IDE, **`agent`**, or Cl
    4. A bug is a stand-alone defect and is never split. It may reference a related feature or task, and it is never a child of that issue. The tree is only a feature and its child tasks.
 4. [plan-implementation](skills/plan-implementation/) writes one root `PLAN.md` for a task or a bug. Each step lists the test files for that change. A feature is refused until [create-tasks](skills/create-tasks/) has divided it.
 5. [implement-next-step](skills/implement-next-step/) carries out the next incomplete step and asks the human to validate it. It marks the step complete only after the human says it is complete. The human commits. The skill does not commit and does not open the pull request. When the human says `tests only` or `tests-only`, the skill writes that step’s tests and leaves production code unchanged.
-6. The human opens the pull request.
+6. [create-pull-request](skills/create-pull-request/) opens the pull request. The title and body come from the change. A branch named for a GitHub issue associates the pull request with that issue.
 7. [review-pull-request](skills/review-pull-request/) writes `REVIEW.md` and does not post on the pull request.
 8. The human addresses that feedback with ordinary prompts. No skill owns that turn.
 
@@ -39,6 +39,7 @@ Invoke a skill explicitly with **`/skill-name`** (Cursor IDE, **`agent`**, or Cl
 | [create-bug](skills/create-bug/) | File a stand-alone bug. It may reference a related feature or task, and it is never a child of that issue |
 | [plan-implementation](skills/plan-implementation/) | Write one root `PLAN.md` for a task or a bug |
 | [implement-next-step](skills/implement-next-step/) | Implement the next incomplete step, including `tests only`, and mark it complete after the human validates it |
+| [create-pull-request](skills/create-pull-request/) | Open a pull request from the branch change. Associate it when the branch names an issue |
 | [review-pull-request](skills/review-pull-request/) | Write `REVIEW.md` only. Do not post on the pull request |
 | [create-tests](skills/create-tests/) | Vitest tests for behavior already in the codebase. Outside the loop |
 | [update-deps](skills/update-deps/) | Patch and minor npm/pnpm updates. Outside the loop |
@@ -93,6 +94,12 @@ On mobile Safari, the checkout button stays disabled after autofill until the pa
 ```text
 /implement-next-step
 tests only
+```
+
+### [create-pull-request](skills/create-pull-request/)
+
+```text
+/create-pull-request
 ```
 
 ### [review-pull-request](skills/review-pull-request/)
