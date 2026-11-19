@@ -27,6 +27,7 @@ Invoke a skill explicitly with **`/skill-name`** (Cursor IDE, **`agent`**, or Cl
 6. [create-pull-request](skills/create-pull-request/) opens the pull request. The title and body come from the change. A branch named for a GitHub issue associates the pull request with that issue.
 7. [review-pull-request](skills/review-pull-request/) writes `REVIEW.md` and does not post on the pull request.
 8. The human addresses that feedback with ordinary prompts. No skill owns that turn.
+9. [merge-pull-request](skills/merge-pull-request/) merges the pull request by rebase or squash. It never creates a merge commit. Then it switches to `main`, pulls, and deletes that pull request's local and remote branches.
 
 [git-commit](skills/git-commit/), [create-tests](skills/create-tests/), and [update-deps](skills/update-deps/) stay outside the loop. [git-commit](skills/git-commit/) commits the current changes with a message chosen from the branch. [create-tests](skills/create-tests/) covers behavior already in the codebase. [update-deps](skills/update-deps/) takes patch and minor npm and pnpm updates.
 
@@ -41,6 +42,7 @@ Invoke a skill explicitly with **`/skill-name`** (Cursor IDE, **`agent`**, or Cl
 | [implement-next-step](skills/implement-next-step/) | Implement the next incomplete step, including `tests only`, and mark it complete after the human validates it |
 | [create-pull-request](skills/create-pull-request/) | Open a pull request from the branch change. Associate it when the branch names an issue |
 | [review-pull-request](skills/review-pull-request/) | Write `REVIEW.md` only. Do not post on the pull request |
+| [merge-pull-request](skills/merge-pull-request/) | Rebase or squash the pull request, then update `main` and delete the branch |
 | [create-tests](skills/create-tests/) | Vitest tests for behavior already in the codebase. Outside the loop |
 | [update-deps](skills/update-deps/) | Patch and minor npm/pnpm updates. Outside the loop |
 | [git-commit](skills/git-commit/) | Commit the current changes. On `main`, confirm a branch first. Outside the loop |
@@ -106,6 +108,12 @@ tests only
 
 ```text
 /review-pull-request #87
+```
+
+### [merge-pull-request](skills/merge-pull-request/)
+
+```text
+/merge-pull-request
 ```
 
 ### [create-tests](skills/create-tests/)
