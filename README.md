@@ -2,7 +2,7 @@
 
 Skills for the path from a written intent to a reviewed pull request. This repo ships both a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin (`.claude-plugin/`) and a [Cursor](https://cursor.com/docs/plugins) plugin (`.cursor-plugin/`). The loop in this README is the one both plugins ship.
 
-`create-tests` and `update-deps` stay outside that loop. `create-tests` covers behavior already in the codebase. `update-deps` takes patch and minor npm and pnpm updates.
+`git-commit`, `create-tests`, and `update-deps` stay outside that loop. `git-commit` commits the current changes with a message chosen from the branch. `create-tests` covers behavior already in the codebase. `update-deps` takes patch and minor npm and pnpm updates.
 
 Skills live under [`skills/`](skills/) as standard Agent Skills (`SKILL.md` per folder).
 
@@ -28,7 +28,7 @@ Invoke a skill explicitly with **`/skill-name`** (Cursor IDE, **`agent`**, or Cl
 7. [review-pull-request](skills/review-pull-request/) writes `REVIEW.md` and does not post on the pull request.
 8. The human addresses that feedback with ordinary prompts. No skill owns that turn.
 
-[create-tests](skills/create-tests/) and [update-deps](skills/update-deps/) stay outside the loop. [create-tests](skills/create-tests/) covers behavior already in the codebase. [update-deps](skills/update-deps/) takes patch and minor npm and pnpm updates.
+[git-commit](skills/git-commit/), [create-tests](skills/create-tests/), and [update-deps](skills/update-deps/) stay outside the loop. [git-commit](skills/git-commit/) commits the current changes with a message chosen from the branch. [create-tests](skills/create-tests/) covers behavior already in the codebase. [update-deps](skills/update-deps/) takes patch and minor npm and pnpm updates.
 
 | Skill | Purpose |
 | ----- | ------- |
@@ -42,6 +42,7 @@ Invoke a skill explicitly with **`/skill-name`** (Cursor IDE, **`agent`**, or Cl
 | [review-pull-request](skills/review-pull-request/) | Write `REVIEW.md` only. Do not post on the pull request |
 | [create-tests](skills/create-tests/) | Vitest tests for behavior already in the codebase. Outside the loop |
 | [update-deps](skills/update-deps/) | Patch and minor npm/pnpm updates. Outside the loop |
+| [git-commit](skills/git-commit/) | Commit the current changes. On `main`, confirm a branch first. Outside the loop |
 
 ### [capture-intent](skills/capture-intent/)
 
@@ -110,6 +111,12 @@ tests only
 
 ```text
 /update-deps
+```
+
+### [git-commit](skills/git-commit/)
+
+```text
+/git-commit
 ```
 
 ---
