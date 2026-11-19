@@ -38,15 +38,21 @@ Leave secrets unstaged (`.env`, credentials, keys, tokens). If the user asked to
 Apply the first match.
 
 1. **Current branch is `main`.** Formulate the message from the current changes. Follow **On main**. Do not commit yet.
-2. **Not `main`, and `git rev-list --count main..HEAD` is greater than 0.** This is a commit after the first. The message is `WIP - <description>`. The description is based on the current changes. A `feature/` prefix and a GitHub issue do not change this.
-3. **Associated with a GitHub issue, and the count is 0.** This is the first commit. Formulate the message from the intent of that issue.
+2. **Not `main`, and `git rev-list --count main..HEAD` is greater than 0.** This is a commit after the first. The subject is `WIP -` plus a short imperative description of the current changes. A `feature/` prefix and a GitHub issue do not change this. Example: `WIP - keep the eject latch closed`.
+3. **Associated with a GitHub issue, and the count is 0.** This is the first commit. Formulate the message from the intent of that issue. State the outcome the issue asks for, from its title and body. Keep it true of the diff.
 4. **Not `main`, not associated with a GitHub issue, and the count is 0.** This is the first commit. Formulate the message from the current changes.
 
-A change-based message is one or two sentences on why the change was made. Match recent `git log` style when the repository has one. Do not list files.
+Do not list files. Follow **Message** for every commit. Do not copy `git log` when it conflicts with those rules.
 
-An issue message states the outcome the issue asks for, from its title and body. Do not list files. Keep it true of the diff.
+## Message
 
-A WIP message is one line: `WIP -` plus a short description of the current changes. Example: `WIP - keep the eject latch closed until the core reports idle`.
+1. Use the imperative mood. Write the subject line as a command.
+2. Limit the subject line to 50 characters. Keep it concise so it doesn't get truncated in git log --oneline or GitHub UIs.
+3. Do not capitalize the subject line. Start it with a lowercase letter. On a WIP commit, `WIP` is all uppercase and the rest of the subject stays lowercase. Write the body in normal sentence case.
+4. Do not end the subject line with a period. Save space and treat it like a title.
+5. Separate subject from body with a blank line. Git tools rely on this blank line to distinguish the summary from the details.
+6. Wrap the body at 72 characters. Keep lines readable in terminal windows without horizontal scrolling.
+7. Use the body to explain what and why, not how. The code diff already shows how you made the change; the commit body should explain the context and reasoning. (Note: The imperative rule applies only to the subject line—you can write the body in standard past/present tense.)
 
 ## Associated branch
 
@@ -85,7 +91,9 @@ The diff that decides the message is the diff that gets committed.
 
 ```bash
 git commit -m "$(cat <<'EOF'
-Message here.
+subject line here
+
+Body wrapped at 72 characters. Explain what and why.
 
 EOF
 )"
