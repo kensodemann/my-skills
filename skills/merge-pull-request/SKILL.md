@@ -3,13 +3,14 @@ name: merge-pull-request
 description: >-
   Merge a GitHub pull request by rebase or squash, never with a merge commit.
   Squash when any commit subject is WIP, and use the first commit's message.
+  Remove root PLAN.md and REVIEW.md before merging when they exist.
   Then switch to main, pull, and delete the pull request's local and remote
   branches. Use when the user asks to merge a pull request.
 ---
 
 # Merge pull request
 
-Merge one open pull request on GitHub. Never create a merge commit. Do not pass `--merge`. Do not use `git merge`. Do not update git config. Do not force-push.
+Merge one open pull request on GitHub. Never create a merge commit. Do not pass `--merge`. Do not use `git merge`. Do not update git config. Do not skip hooks. Do not force-push, except the force-push in **Remove plan and review**.
 
 The pull request is the one the user names. When they do not name one, use the pull request for the current branch.
 
@@ -26,7 +27,7 @@ If this directory is not a git repository, stop.
 
 If `main` does not exist, stop and ask. Do not guess another branch.
 
-If the working tree is dirty, stop. Do not merge and do not stash.
+If the working tree is dirty, stop. Do not merge and do not stash. Root `PLAN.md` and root `REVIEW.md` are the exception. Untracked, modified, staged, or deleted copies of those two files do not count. Any other path does.
 
 If the pull request is not open, stop and report its state.
 
@@ -43,13 +44,55 @@ The first commit is the oldest one in that list. A WIP subject is a subject line
 
 ## Strategy
 
-Apply the first match. The strategy is for this merge only.
+Apply the first match. The strategy is for this merge only. Choose it before **Remove plan and review**. Do not choose it again.
 
 1. **One commit.** Rebase.
 2. **More than one commit, and no subject starts with `WIP - `.** Rebase.
 3. **More than one commit, and at least one subject starts with `WIP - `.** Squash.
 
 A WIP mention in a commit body does not count. One WIP commit is a rebase.
+
+## Remove plan and review
+
+Do this after the strategy is chosen and before the merge.
+
+A file is committed when `git cat-file -e origin/<headRefName>:<file>` succeeds for root `PLAN.md` or root `REVIEW.md`.
+
+Enter this section only when either file is committed on `origin/<headRefName>`, or the current branch is `<headRefName>` and either file exists in the worktree. Otherwise skip it.
+
+When either file is committed, check out `<headRefName>` if the current branch is different. If that local branch does not exist, `git checkout --track origin/<headRefName>`. If checkout fails, stop. Do not merge. `HEAD` must then equal `origin/<headRefName>`. If it does not, stop. Do not reset and do not merge.
+
+Remove each of those files:
+
+- When the current branch is `<headRefName>`, the file exists, and it is not committed, delete it with `rm -f -- <file>`. Do not commit that deletion.
+- When it is committed, remove it with `git rm -f -- <file>`, including a committed file already missing from the worktree. Pass only committed paths.
+
+If neither file was committed, do not commit. Continue to the merge.
+
+If either file was committed, commit that removal and push `<headRefName>` before the merge. One commit covers every committed path. Use the strategy already chosen.
+
+For a rebase, amend the last commit and force-push. Keep its message. Do not use `--reset-author`.
+
+```bash
+git commit --amend --no-edit
+git push --force-with-lease origin HEAD
+```
+
+For a squash, create a new commit and push it. Do not amend. Do not force-push.
+
+```bash
+git commit -m "$(cat <<'EOF'
+remove plan and review files
+
+Drop these notes so they do not land on main.
+EOF
+)"
+git push origin HEAD
+```
+
+If the commit, amend, or push fails, stop and report the error. Do not merge.
+
+## Merge
 
 Rebase:
 
@@ -85,4 +128,4 @@ git push origin --delete <headRefName>
 
 `git branch -D` is required because a GitHub rebase or squash does not make the old branch an ancestor of `main`. Delete only `<headRefName>`. If the remote branch is already gone, report that and continue.
 
-Report the pull request URL, whether it was rebased or squashed, and that `main` is updated and both branch copies are gone.
+Report the pull request URL, whether it was rebased or squashed, and that `main` is updated and both branch copies are gone. When `PLAN.md` or `REVIEW.md` was removed, say so.

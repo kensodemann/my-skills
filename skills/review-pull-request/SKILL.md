@@ -66,6 +66,8 @@ Use these abbreviations consistently in tags and in the counts table:
 
 Many teams **squash-merge** pull requests. Intermediate commits (including titles like "WIP") are normal working history and do not land on the base branch. Do not flag commit count, WIP prefixes, or commit-message polish as review blockers unless the user or repo explicitly cares.
 
+Root `PLAN.md` is removed before merge, including when it is committed on the branch. It does not land on the base branch. Ignore the file. Do not file a question, or any other finding, about its presence or contents.
+
 ## Focus areas
 
 Prioritize feedback in these areas when relevant to the change:
