@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.1.1]
+
+- Keep release steps in a repo-local skill so they are not shipped in the plugin zip.
+- `merge-pull-request` removes root `PLAN.md` and `REVIEW.md` before merging, and pushes that removal when either file is committed.
+- `review-pull-request` ignores those files, since they do not land on the base branch.
+
 ## [3.1.0]
 
 - Add `git-commit` to choose the commit message from the branch, push after a successful commit, and ask before committing on `main`.
